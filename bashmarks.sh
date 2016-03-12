@@ -42,7 +42,7 @@ RED="0;31m"
 GREEN="0;33m"
 
 # save current directory to bookmarks
-function s {
+function save_bookmark {
     check_help $1
     _bookmark_name_valid "$@"
     if [ -z "$exit_message" ]; then
@@ -51,9 +51,10 @@ function s {
         echo "export DIR_$1=\"$CURDIR\"" >> $SDIRS
     fi
 }
+alias s=save_bookmark
 
 # jump to bookmark
-function g {
+function go_to_bookmark {
     check_help $1
     source $SDIRS
     target="$(eval $(echo echo $(echo \$DIR_$1)))"
@@ -65,16 +66,18 @@ function g {
         echo -e "\033[${RED}WARNING: '${target}' does not exist\033[00m"
     fi
 }
+alias g=go_to_bookmark
 
 # print bookmark
-function p {
+function print_bookmark {
     check_help $1
     source $SDIRS
     echo "$(eval $(echo echo $(echo \$DIR_$1)))"
 }
+alias p=print_bookmark
 
 # delete bookmark
-function d {
+function delete_bookmark {
     check_help $1
     _bookmark_name_valid "$@"
     if [ -z "$exit_message" ]; then
@@ -82,6 +85,7 @@ function d {
         unset "DIR_$1"
     fi
 }
+alias d=delete_bookmark
 
 # print out help for the forgetful
 function check_help {
@@ -97,7 +101,7 @@ function check_help {
 }
 
 # list bookmarks with dirnam
-function l {
+function list_bookmarks {
     check_help $1
     source $SDIRS
         
@@ -107,6 +111,7 @@ function l {
     # uncomment this line if color output is not working with the line above
     # env | grep "^DIR_" | cut -c5- | sort |grep "^.*=" 
 }
+alias l=list_bookmarks
 # list bookmarks without dirname
 function _l {
     source $SDIRS
